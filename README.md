@@ -7,7 +7,7 @@ Key features include the ability to customize list names and colors, edit and de
 
 - **Persistent Data**: Tasks and lists are saved in local storage for persistence across sessions.
 - **Create Multiple Lists**: Users can create various to-do lists to categorize and manage tasks.
-  ![Create Multiple Lists]![add-list](https://github.com/user-attachments/assets/52b878f7-2016-4f19-a404-ebca6a946edf)
+  ![Create Multiple Lists](https://github.com/user-attachments/assets/52b878f7-2016-4f19-a404-ebca6a946edf)
 - **Edit lists name and color**: Customize list names and colors to better organize and differentiate between lists.
   ![Edit lists name and color](https://github.com/user-attachments/assets/5a7ecbe2-34d7-4069-aee1-a6b6912ce1f3)
 - **Add and Edit Tasks**: Easily add tasks to any list, edit task names, and reorder tasks via drag-and-drop.
