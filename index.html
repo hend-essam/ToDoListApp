@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>To Do List</title>
+  </head>
+  <body>
+    <div class="container">
+      <section class="head">
+        <h1>TO DO LIST</h1>
+        <section>
+          <div class="date">
+            <label>DATE :</label>
+            <span></span>
+            <input type="date" />
+          </div>
+          <div class="add-list">
+            <span onclick="openForm()">+</span>
+            <div class="add-form">
+              <h3>ADD LIST</h3>
+              <form>
+                <section>
+                  <label for="name">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    maxlength="14"
+                    spellcheck="false"
+                  />
+                  <div class="exist-name"></div>
+                </section>
+                <section class="colors">
+                  <p>color</p>
+                  <div data-color="pale-pink"></div>
+                  <div data-color="almond"></div>
+                  <div data-color="lavender"></div>
+                  <div data-color="silver"></div>
+                </section>
+              </form>
+              <button>ADD</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <section class="lists"></section>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
