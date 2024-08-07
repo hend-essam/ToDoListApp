@@ -28,7 +28,7 @@ To run this project locally, you need a web browser and an internet connection.
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/ToDoListApp.git
+    git clone https://github.com/hend-essam/ToDoListApp.git
     ```
 
 2. Navigate to the project directory:
