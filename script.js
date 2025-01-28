@@ -388,24 +388,19 @@ function addNewTask(e) {
 }
 function addTask(task) {
   const form = document.querySelector(`#${task.listId} form`);
-  const taskContainer = document.createElement("div");
-  taskContainer.classList.add("task");
-  taskContainer.setAttribute("id", task.id);
-  const taskEle = `
-  <i class="bi bi-list"></i>
-  <input type="checkbox" class="check-task">
-  <input type="text" spellcheck="false" class="task-content" value="${task.title}">
-  <i class="bi bi-x"></i>
-  <i class="bi bi-check2"></i>`;
-  taskContainer.innerHTML = taskEle;
-  if (task.complete && task.content) {
-    taskContainer.classList.add("done");
-    taskContainer.querySelector(".task-content").setAttribute("readonly", "");
-  } else {
-    taskContainer.classList.remove("done");
-    taskContainer.querySelector(".task-content").removeAttribute("readonly");
-  }
-  form.appendChild(taskContainer);
+  const taskHTML = `
+    <div class="task ${task.complete ? "done" : ""}" id="${task.id}">
+      <i class="bi bi-list"></i>
+      <input type="checkbox" class="check-task" ${
+        task.complete ? "checked" : ""
+      }>
+      <input type="text" spellcheck="false" class="task-content" value="${
+        task.title
+      }" ${task.complete ? "readonly" : ""}>
+      <i class="bi bi-x"></i>
+      <i class="bi bi-check2"></i>
+    </div>`;
+  form.insertAdjacentHTML("beforeend", taskHTML);
 }
 /* end add new task */
 
@@ -467,30 +462,23 @@ function saveTask(e) {
 function completeTask(e) {
   const target = e.target;
   if (target.classList.contains("check-task")) {
-    const taskContent = target.parentNode.querySelector(".task-content");
+    const taskElement = target.parentNode;
+    const taskContent = taskElement.querySelector(".task-content");
     const listID = getAncestor(target, 3).id;
-    const taskID = target.parentNode.id;
+    const taskID = taskElement.id;
 
-    arrayOflists
-      .find((list) => list.id === listID)
-      .tasks.find((task) => task.id === taskID).complete = !arrayOflists
-      .find((list) => list.id === listID)
-      .tasks.find((task) => task.id === taskID).complete;
-    if (
-      taskContent.value !== "" &&
-      arrayOflists
-        .find((list) => list.id === listID)
-        .tasks.find((task) => task.id === taskID).title !== ""
-    ) {
-      if (
-        arrayOflists
-          .find((list) => list.id === listID)
-          .tasks.find((task) => task.id === taskID).title === taskContent.value
-      ) {
-        target.parentNode.classList.toggle("done");
-        taskContent.toggleAttribute("readonly");
-      }
-    } else taskContent.setAttribute("placeholder", "you must write something!");
+    const list = arrayOflists.find((list) => list.id === listID);
+    const task = list.tasks.find((task) => task.id === taskID);
+
+    if (!taskContent.value.trim()) {
+      taskContent.setAttribute("placeholder", "You must write something!");
+      return;
+    }
+
+    task.complete = !task.complete;
+    taskElement.classList.toggle("done", task.complete);
+    taskContent.toggleAttribute("readonly", task.complete);
+
     saveList();
   }
 }
@@ -498,7 +486,11 @@ function completeTask(e) {
 
 /* start save lists in localstorage */
 function saveList() {
-  localStorage.setItem("lists", JSON.stringify(arrayOflists));
+  try {
+    localStorage.setItem("lists", JSON.stringify(arrayOflists));
+  } catch (error) {
+    console.error("Failed to save lists to localStorage:", error);
+  }
 }
 /* end save lists in localstorage */
 
