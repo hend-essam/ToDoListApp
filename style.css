@@ -516,6 +516,7 @@ input:-webkit-autofill:focus {
 .sortable-chosen,
 .sortable-ghost {
   background: #ffffff;
+  border-radius: 10px;
 }
 .sortable-ghost {
   opacity: 0.5;
