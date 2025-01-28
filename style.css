@@ -165,10 +165,13 @@ input[type="text"]:focus-visible {
 }
 .lists form {
   margin: 20px 0 10px;
-  padding: 0 10px;
+  /*   padding: 0 10px; */
   max-height: 200px;
   overflow-y: auto;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 h3 {
   text-align: center;
@@ -190,7 +193,7 @@ input[type="checkbox"] {
   height: 12px;
   background-color: white;
   border-radius: 3px;
-  left: 0;
+  left: 30px;
 }
 input[type="text"] {
   border: 0;
@@ -295,6 +298,12 @@ label[for="name"] {
   padding: 10px;
   border-radius: 50%;
 }
+.list-head > i {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  color: gray;
+}
 .options {
   display: none;
   flex-direction: column;
@@ -313,12 +322,7 @@ label[for="name"] {
   display: flex;
   justify-content: center;
 }
-.list-head > i {
-  position: absolute;
-  right: 0;
-  top: 2px;
-  color: gray;
-}
+
 .bi-arrow-down-up {
   left: 0;
   font-size: 14.5px;
@@ -399,12 +403,9 @@ input:read-only {
 .task {
   display: flex;
   position: relative;
-  margin-bottom: 18px;
 }
 .task i {
-  position: absolute;
-  right: -5px;
-  font-size: 20px;
+  font-size: 24px;
   color: gray;
   cursor: pointer;
 }
@@ -431,6 +432,7 @@ input:-webkit-autofill:focus {
   padding: 2px 2px 0;
   color: green;
   font-size: 16px;
+  height: 22px;
 }
 .done input[type="checkbox"] {
   background-color: #818181c4;
@@ -444,24 +446,6 @@ input:-webkit-autofill:focus {
 }
 .draggable .task {
   cursor: move;
-}
-.bi-list {
-  left: -28px;
-  width: fit-content;
-}
-.task {
-  margin-left: 18px;
-}
-input[type="checkbox"] {
-  left: 7px;
-}
-.lists .task::before {
-  content: "";
-  position: absolute;
-  width: 1px;
-  height: 43.3px;
-  background-color: #8080803b;
-  left: -6px;
 }
 .lists .task:last-child:before {
   height: 33px;
@@ -528,4 +512,14 @@ input[type="checkbox"] {
   border-radius: 30px;
   background-color: #ced5df;
   cursor: pointer;
+}
+.sortable-chosen,
+.sortable-ghost {
+  background: #ffffff;
+}
+.sortable-ghost {
+  opacity: 0.5;
+}
+.sortable-drag {
+  opacity: 0.5;
 }

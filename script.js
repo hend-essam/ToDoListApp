@@ -198,8 +198,41 @@ function newList(id, name, color) {
   listDiv.innerHTML = listContent;
   listsContainer.appendChild(listDiv);
   /* end add list name and list color */
+  // Initialize SortableJS for this list
+  initializeSortable(id);
 }
 /* end add new list */
+
+/* start initialize SortableJS */
+function initializeSortable(listId) {
+  const listElement = document.getElementById(listId);
+  if (listElement) {
+    new Sortable(listElement.querySelector("form"), {
+      animation: 150, // Smooth animation
+      ghostClass: "sortable-ghost", // Class for the ghost element
+      chosenClass: "sortable-chosen", // Class for the chosen item
+      dragClass: "sortable-drag", // Class for the dragging item
+      handle: ".bi-list", // Only allow dragging when the handle is used
+      onEnd: function (evt) {
+        // Save the new order of tasks
+        const taskElements = Array.from(evt.from.children);
+        const taskIds = taskElements.map((task) => task.id);
+        const listId = evt.from.parentNode.id;
+
+        // Update the order in the arrayOflists
+        const list = arrayOflists.find((list) => list.id === listId);
+        if (list) {
+          list.tasks.sort((a, b) => {
+            return taskIds.indexOf(a.id) - taskIds.indexOf(b.id);
+          });
+          saveList(); // Save the updated order to localStorage
+        }
+      },
+    });
+  }
+}
+/* end initialize SortableJS */
+
 /* start reset form style */
 function resetFormStyle(e) {
   e.preventDefault();
@@ -221,11 +254,8 @@ listsContainer.addEventListener("click", function (e) {
   saveTask(e);
   deleteTask(e);
   completeTask(e);
-  draggableTask(e);
 });
-listsContainer.addEventListener("mousedown", function (e) {
-  draggableTask(e);
-});
+
 listsContainer.addEventListener("mouseover", () => changeListColor());
 
 /* start get ancestor of element*/
@@ -261,60 +291,6 @@ function changeListColor() {
 changeListColor();
 /* end change list color */
 
-function draggableTask(e) {
-  target = e.target;
-  if (target.classList.contains("bi-list")) {
-    const task = target.parentNode;
-    const form = task.parentNode;
-    form.querySelectorAll(".task").forEach((task) => (task.draggable = true));
-    //////////////////////////////////////////////////
-    task.addEventListener("dragstart", () => {
-      form.classList.add("draggable");
-      setTimeout(() => task.classList.add("dragging"), 0);
-    });
-    task.addEventListener("dragend", () => {
-      e.preventDefault();
-      form.classList.remove("draggable");
-      task.classList.remove("dragging");
-      form
-        .querySelectorAll(".task")
-        .forEach((task) => task.removeAttribute("draggable"));
-      /* start order list */
-      const oldList = arrayOflists.find(
-        (list) => list.id === form.parentNode.id
-      ).tasks;
-      let sortOrder = [];
-      Array.from(form.childNodes).forEach((task) => {
-        sortOrder.push(task.id);
-      });
-      const orderedList = oldList.sort(function (a, b) {
-        return sortOrder.indexOf(a.id) - sortOrder.indexOf(b.id);
-      });
-      arrayOflists.find((list) => list.id === form.parentNode.id).tasks =
-        orderedList;
-      saveList();
-      /* end order list */
-    });
-    form.addEventListener("dragover", handleDrageAndDrop);
-    form.addEventListener("dragenter", handleDragEnter);
-  }
-  ////////////////////////////////////////////////
-}
-const handleDrageAndDrop = (e) => {
-  target = e.target;
-  if (target.classList.contains("draggable")) {
-    e.preventDefault();
-    const draggingItem = target.querySelector(".dragging");
-    const siblings = [...target.querySelectorAll(".task:not(.dragging)")];
-    let nextSibling = siblings.find((sibling) => {
-      return e.offsetY <= sibling.offsetTop + sibling.offsetHeight;
-    });
-    target.insertBefore(draggingItem, nextSibling);
-  }
-};
-const handleDragEnter = (e) => {
-  e.preventDefault();
-};
 /* start edit list name */
 function editListName(e) {
   const target = e.target;
