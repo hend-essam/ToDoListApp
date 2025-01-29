@@ -428,6 +428,8 @@ function saveTask(e) {
     e.preventDefault();
     const saveTaskBtn = target.parentNode.querySelector(".bi-check2");
     const deleteBtn = target.parentNode.querySelector(".bi-x");
+
+    // Listen for 'input' event to enable the save button when the task is changed
     target.addEventListener("input", function () {
       if (
         arrayOflists
@@ -442,10 +444,25 @@ function saveTask(e) {
         deleteBtn.style.display = "block";
       }
     });
+
+    // Listen for the click on the save button
     saveTaskBtn.addEventListener("click", function () {
       if (target.value === "") {
         target.setAttribute("placeholder", "you must write something!");
       } else {
+        arrayOflists
+          .find((list) => list.id === getAncestor(target, 3).id)
+          .tasks.find((task) => task.id === target.parentNode.id).title =
+          target.value;
+        saveTaskBtn.style.display = "none";
+        deleteBtn.style.display = "block";
+        saveList();
+      }
+    });
+
+    // Listen for the "Enter" key to save the task when pressed
+    target.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" && target.value !== "") {
         arrayOflists
           .find((list) => list.id === getAncestor(target, 3).id)
           .tasks.find((task) => task.id === target.parentNode.id).title =
